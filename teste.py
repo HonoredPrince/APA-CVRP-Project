@@ -1,7 +1,7 @@
 from readDataFromFile import readFiles
 import collections
 
-def teste():
+def testeLang():
     loader = readFiles("P-n16-k8")
     vertexes = loader.get_vertexes()
     matrix = loader.get_matrix()
@@ -19,4 +19,4 @@ def teste():
     print(vertexes)
     print(matrix)
     
-teste()
+testeLang()
