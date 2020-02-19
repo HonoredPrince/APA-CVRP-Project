@@ -1,16 +1,16 @@
 class readFiles():
     def __init__(self, filename):
-        data = open("instancias_teste/" + filename + ".txt", "r")
+        data = open("instancias_teste/" + filename, "r")
         lines = data.readlines()
 
         self.dimension = 0
         self.capacity = 0
 
-        self.vertexes = {}
-        self.matrix = []
+        self.stopPoints = {}
+        self.costMatrix = []
 
-        vertexHasContent = False
-        matrixHasContent = False
+        stopPointsHasContent = False
+        matrixCostHasContent = False
 
         for line in lines:
             line = line.replace('\n', '')
@@ -23,33 +23,33 @@ class readFiles():
                 capacityLine = line.split()
                 self.capacity = capacityLine[1]
 
-            if line.__contains__('DEMAND_SECTION:') or vertexHasContent:
-                vertexHasContent = True
+            if line.__contains__('DEMAND_SECTION:') or stopPointsHasContent:
+                stopPointsHasContent = True
                 if line.__contains__('DEMAND_SECTION:'):
                     continue
-                vertexDemandLine = line.split()
-                if(len(vertexDemandLine) == 0):
-                    vertexHasContent = False
+                stopPointsDemandLine = line.split()
+                if(len(stopPointsDemandLine) == 0):
+                    stopPointsHasContent = False
                 else:
-                    self.vertexes[vertexDemandLine[0]] = vertexDemandLine[1]
+                    self.stopPoints[stopPointsDemandLine[0]] = stopPointsDemandLine[1]
             
-            if line.__contains__('EDGE_WEIGHT_SECTION') or matrixHasContent:
-                matrixHasContent = True
+            if line.__contains__('EDGE_WEIGHT_SECTION') or matrixCostHasContent:
+                matrixCostHasContent = True
                 if line.__contains__('EDGE_WEIGHT_SECTION'):
                     continue
-                matrixLine = line.split()
-                if(len(matrixLine) == 0):
-                    matrixHasContent = False
+                matrixCostLine = line.split()
+                if(len(matrixCostLine) == 0):
+                    matrixCostHasContent = False
                 else:
-                    self.matrix.append(matrixLine)
+                    self.costMatrix.append(matrixCostLine)
             else:
                 continue
 
-    def get_vertexes(self):       
-        return self.vertexes
+    def get_stopPoints(self):       
+        return self.stopPoints
     
-    def get_matrix(self):       
-        return self.matrix
+    def get_costMatrix(self):       
+        return self.costMatrix
     
     def get_dimension(self):       
         return self.dimension
