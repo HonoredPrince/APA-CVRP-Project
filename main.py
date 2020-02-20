@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from NearestN import NearestNeighbour
-#from string import whitespace as ws
+from string import whitespace as ws
 import re
+
+#Basic menu, displays every instance filename avaliable
 def inputMenu():
     print('----Filename Options----' + 
         '\nP-n16-k8' + 
@@ -14,20 +16,22 @@ def inputMenu():
         '\nP-n55-k7' +
         '\n------------------------'
     )
-    instanceFilename = raw_input('\nEnter the instance filename:')
+    #If using python2 the input() function has to be changed to raw_input()
+    instanceFilename = input('\nEnter the instance filename:')
     instanceFilename = re.sub("^\s+|\s+$", "", instanceFilename, flags=re.UNICODE)
     while len(instanceFilename) < 8 or len(instanceFilename) > 9:
         print('\nInvalid input, please enter a correct filename for a instance!')
-        instanceFilename = raw_input('\nEnter the instance filename:')
+        instanceFilename = input('\nEnter the instance filename:')
         instanceFilename.strip()
     return instanceFilename + '.txt'
 
+#Recieves input from function, and is directly passed onto the Object conctructor parameter
 instance = inputMenu()
 NearestNOperation = NearestNeighbour(instance)
 
+#Calling functions to run the application
 NearestNOperation.nearestNeighbourFunction()
-NearestNOperation.debugValues()
 NearestNOperation.showResults()
 
+#NearestNOperation.debugValues() #Just use this function when debugging
 
-#To DO: Comment this file

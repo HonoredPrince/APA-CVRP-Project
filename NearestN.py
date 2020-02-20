@@ -97,11 +97,12 @@ class NearestNeighbour:
     #Function only for debugging purposes, should only be used for development stage
     #Just remove the comment tag for the respective result you want to see at certain point of the code
     #And call it on the part of the code you want 
+    
     def debugValues(self):
         print(self.vehicleDestinationHistory)
-        #print(self.filename)
-        #print(self.dimension)
-        #print(self.capacity)
-        #print(self.demand)
-        #print(self.matrix)
+        print(self.filename)
+        print(self.dimension)
+        print(self.capacity)
+        print(self.demand)
+        print(self.matrix)
         
