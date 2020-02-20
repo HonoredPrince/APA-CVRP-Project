@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from NearestN import NearestNeighbour
 #from string import whitespace as ws
 import re
@@ -13,11 +14,11 @@ def inputMenu():
         '\nP-n55-k7' +
         '\n------------------------'
     )
-    instanceFilename = input('\nEnter the instance filename:')
+    instanceFilename = raw_input('\nEnter the instance filename:')
     instanceFilename = re.sub("^\s+|\s+$", "", instanceFilename, flags=re.UNICODE)
-    while len(instanceFilename) != 8:
+    while len(instanceFilename) < 8 or len(instanceFilename) > 9:
         print('\nInvalid input, please enter a correct filename for a instance!')
-        instanceFilename = input('\nEnter the instance filename:')
+        instanceFilename = raw_input('\nEnter the instance filename:')
         instanceFilename.strip()
     return instanceFilename + '.txt'
 
@@ -27,3 +28,6 @@ NearestNOperation = NearestNeighbour(instance)
 NearestNOperation.nearestNeighbourFunction()
 NearestNOperation.debugValues()
 NearestNOperation.showResults()
+
+
+#To DO: Comment this file

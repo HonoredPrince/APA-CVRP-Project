@@ -3,15 +3,21 @@ class readFiles():
         data = open("instancias_teste/" + filename, "r")
         lines = data.readlines()
 
+        #Create variables to receive data from the file
         self.dimension = 0
         self.capacity = 0
 
+        #Used python Dictonary data structure for the point-demand data
         self.stopPoints = {}
+
         self.costMatrix = []
 
+        #Check if any data is written on the demand a matrix section of the file
         stopPointsHasContent = False
         matrixCostHasContent = False
 
+        #Iterate every line from the file and split the string using the keywords 
+        #and store them on the respective variable or location
         for line in lines:
             line = line.replace('\n', '')
 
@@ -45,6 +51,7 @@ class readFiles():
             else:
                 continue
 
+    #Deafault get functions 
     def get_stopPoints(self):       
         return self.stopPoints
     
