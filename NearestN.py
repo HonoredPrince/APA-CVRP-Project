@@ -52,7 +52,7 @@ class NearestNeighbour:
                 sumVehicleTravelDistance += minDistanceCalculated
                 visitedClientsHistory.append(clientToVisit)
                 self.vehicleDestinationHistory[vehicle].append(clientToVisit)
-                if len(visitedClientsHistory) > clientsDemandSize:
+                if len(visitedClientsHistory) == clientsDemandSize:
                     self.vehicleDestinationHistory[vehicle].append(0)
                     sumVehicleTravelDistance += self.matrix[clientToVisit][0]
                     self.vehicleDestinationHistory[vehicle].append(vehicleCapacity)
@@ -72,14 +72,16 @@ class NearestNeighbour:
 
     def showResults(self):
         totalDistanceTraveledByVehicles = 0
+        totalClientsVisited = 1
         for vehicle in self.vehicleDestinationHistory:
             print("Vehicle Number", vehicle)
             print("Clients Visited", self.vehicleDestinationHistory[vehicle][:-2])
             print("Demand delivered by this vehicle", self.capacity - self.vehicleDestinationHistory[vehicle][-2])
             print("Traveled Distance", self.vehicleDestinationHistory[vehicle][-1], '\n')
-            totalDistanceTraveledByVehicles += self.vehicleDestinationHistory[vehicle][-1]           
+            totalDistanceTraveledByVehicles += self.vehicleDestinationHistory[vehicle][-1]
+            totalClientsVisited += (len(self.vehicleDestinationHistory[vehicle][:-2]) - 2)           
         print("Total Traveled Distance counting every vehicle: " + str(totalDistanceTraveledByVehicles))
-
+        print("Number of Clients Visited: " + str(totalClientsVisited))
 
     def debugValues(self):
         print(self.vehicleDestinationHistory)
@@ -89,94 +91,3 @@ class NearestNeighbour:
         #print(self.demand)
         #print(self.matrix)
         
-def getStringFromInput():
-    print('----Filename Options----' + 
-        '\nP-n16-k8' + 
-        '\nP-n19-k2' + 
-        '\nP-n20-k2' + 
-        '\nP-n23-k8' + 
-        '\nP-n45-k5' + 
-        '\nP-n50-k10' + 
-        '\nP-n51-k10' +
-        '\nP-n55-k7' +
-        '\n------------------------'
-    )
-    instanceFilename = input('\nEnter the instance filename:')
-    while len(instanceFilename) != 8:
-        print('\nInvalid input, please enter a correct filename for a instance!')
-        instanceFilename = input('\nEnter the instance filename:')
-    return instanceFilename + '.txt'
-
-instance = getStringFromInput()
-NearestNOperation = NearestNeighbour(instance)
-
-NearestNOperation.nearestNedFlanders()
-NearestNOperation.debugValues()
-NearestNOperation.showResults()
-
-
-
-
-
-
-
-
-
-
-
-#NearestNOperation.nearestNeighborFunction()
-#NearestNOperation.printPaths()
-
-# def nearestNeighborFunction(self):
-    #     truckCapacity = self.capacity
-    #     i = 0
-    #     truck = 0
-    #     visitedClients = [0]
-    #     self.truckDestination[truck] = [0]
-    #     totalDistance = 0
-    #     print(self.demand)
-
-    #     while len(visitedClients) < len(self.demand):
-    #         nearestDistance = 100000
-    #         nearestVertex = i
-    #         truckCanGoNext = False
-
-    #         for j in range(len(self.matrix[i])):
-    #             if j not in visitedClients and nearestDistance > self.matrix[i][j] and truckCapacity - self.demand[str(j)] >= 0:
-    #                 truckCanGoNext = True
-    #                 nearestVertex = j
-    #                 nearestDistance = self.matrix[i][j]
-
-    #         if truckCanGoNext:
-    #             truckCapacity = truckCapacity - self.demand[str(nearestVertex)]
-    #             self.truckDestination[truck].append(nearestVertex)
-    #             totalDistance += nearestDistance
-    #             visitedClients.append(nearestVertex)
-    #             if not len(visitedClients) < len(self.demand):
-    #                 self.truckDestination[truck].append(0)
-    #                 totalDistance += self.matrix[nearestVertex][0]
-    #                 self.truckDestination[truck].append(truckCapacity)
-    #                 self.truckDestination[truck].append(totalDistance)
-    #             i = nearestVertex
-
-    #         else:
-    #             self.truckDestination[truck].append(0)
-    #             totalDistance += self.matrix[nearestVertex][0]
-    #             self.truckDestination[truck].append(truckCapacity)
-    #             self.truckDestination[truck].append(totalDistance)
-    #             truckCapacity = self.capacity
-
-    #             truck += 1
-    #             totalDistance = 0
-    #             self.truckDestination[truck] = []
-    #             self.truckDestination[truck].append(0)
-
-    
-    # def printPaths(self):
-    #     for truck in self.truckDestination:
-    #         print("Truck Number", truck)
-    #         print("Truck vertexes", self.truckDestination[truck][:-2])
-    #         print("Truck Capacity", self.capacity - self.truckDestination[truck][-2])
-    #         print("Traveled distance", self.truckDestination[truck][-1], '\n')
-        
-    
