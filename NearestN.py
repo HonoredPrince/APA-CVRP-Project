@@ -19,7 +19,7 @@ class NearestNeighbour:
             self.demand[key] = int(self.demand[key])
 
     #Ned Flanders(Simpsons) a.k.a "vizinho mais próximo"
-    def nearestNedFlanders(self):
+    def nearestNeighbourFunction(self):
         currentClient = 0
         clientsDemandSize = len(self.demand)
         visitedClientsHistory = [0]
