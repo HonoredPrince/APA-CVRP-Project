@@ -29,9 +29,21 @@ def inputMenu():
 instance = inputMenu()
 NearestNOperation = NearestNeighbour(instance)
 
-#Calling functions to run the application
+#Calling functions to run the application and show the results
+print('\n####### Nearest Neighbour Execution Results #######\n')
 NearestNOperation.nearestNeighbourFunction()
 NearestNOperation.showResults()
+routes = NearestNOperation.storeRoutes()
+NearestNOperation.calculateCost(routes)
+
+
+print('\n####### Fully Randomized Execution Results #######\n')
+NearestNOperation.fullyRandomizedSolution()
+NearestNOperation.showResults()
+routes = NearestNOperation.storeRoutes()
+NearestNOperation.calculateCost(routes)
+
 
 #NearestNOperation.debugValues() #Just use this function when debugging
+
 
