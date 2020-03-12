@@ -17,7 +17,7 @@ def inputMenu():
         '\n------------------------'
     )
     #If using python2 the input() function has to be changed to raw_input()
-    instanceFilename = input('\nEnter the instance filename:')
+    instanceFilename = raw_input('\nEnter the instance filename:')
     instanceFilename = re.sub("^\s+|\s+$", "", instanceFilename, flags=re.UNICODE)
     while len(instanceFilename) < 8 or len(instanceFilename) > 9:
         print('\nInvalid input, please enter a correct filename for a instance!')
@@ -34,14 +34,39 @@ print('\n####### Nearest Neighbour Execution Results #######\n')
 NearestNOperation.nearestNeighbourFunction()
 NearestNOperation.showResults()
 routes = NearestNOperation.storeRoutes()
-NearestNOperation.calculateCost(routes)
+distanceTraveledByPassedRoutes = NearestNOperation.calculateCost(routes)
+#distanceTraveledByPassedRoutes, demandDeliveredByPassedRoutes = NearestNOperation.calculateCost(routes)
+print('\nTotal Traveled Distance for the passed routes: ' + str(distanceTraveledByPassedRoutes))
+#print('\nTotal Demand delivered for the passed routes: ' + str(demandDeliveredByPassedRoutes))
 
+print('\nStarting Neighbour Movements Optimization')
+
+print('\n##Intra Swap##')
+routesSwaped = NearestNOperation.intraSwap(routes)
+
+# def test():
+#     for i in range(len(routes)):
+#         routeDemand = NearestNOperation.getRouteDemand(routes[i])
+#         minDelivery = NearestNOperation.getRouteMinDelivery(routes[i])
+#         maxDelivery = NearestNOperation.getRouteMaxDelivery(routes[i])
+#         print(routeDemand)
+#         print(minDelivery)
+#         print(maxDelivery)
+# test()
 
 print('\n####### Fully Randomized Execution Results #######\n')
-NearestNOperation.fullyRandomizedSolution()
+NearestNOperation.fullyRandomizedSolution() 
 NearestNOperation.showResults()
 routes = NearestNOperation.storeRoutes()
-NearestNOperation.calculateCost(routes)
+distanceTraveledByPassedRoutes = NearestNOperation.calculateCost(routes)
+#distanceTraveledByPassedRoutes, demandDeliveredByPassedRoutes = NearestNOperation.calculateCost(routes)
+print('\nTotal Traveled Distance for the passed routes: ' + str(distanceTraveledByPassedRoutes))
+#print('\nTotal Demand delivered for the passed routes: ' + str(demandDeliveredByPassedRoutes))
+
+print('\nStarting Neighbour Movements Optimization')
+
+print('\n##Intra Swap##')
+routesSwaped = NearestNOperation.intraSwap(routes)
 
 
 #NearestNOperation.debugValues() #Just use this function when debugging

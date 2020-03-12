@@ -184,12 +184,96 @@ class NearestNeighbour:
     def calculateCost(self, routesArray):
         routes = routesArray
         distanceTraveled = 0
+        capacity = self.capacity
+        totalDemandDelivered = 0
         for i in range(len(routes)):
-            #print('i: ' + str(i))
             for j in range(len(routes[i]) - 1):
-                #print('j: ' + str(j))
+                demandDeliveredByOneRoute = self.getRouteDemand(routes[i])
                 distanceTraveled += self.matrix[routes[i][j+1]][routes[i][j]]
-        print('Total Traveled Distance for the passed routes: ' + str(distanceTraveled))
+            #print('Total demand delivered by the ' + str(i+1) + 'st route/vehicle: ' + str(demandDeliveredByOneRoute))
+            totalDemandDelivered += demandDeliveredByOneRoute
+            #print('Amount left of capacity: ' + str(capacity - demandDeliveredByOneRoute))
+        #print('\nTotal Traveled Distance for the passed routes: ' + str(distanceTraveled))
+        #print('\nTotal Demand delivered for the passed routes: ' + str(totalDemandDelivered))
+
+        #return {distanceTraveled, totalDemandDelivered}
+        return distanceTraveled   
+
+    def getRouteDemand(self, route):
+        demandDelivered = 0
+        for i in range(len(route)):
+            demandDelivered += self.demand[str(route[i])]
+        return demandDelivered
+
+    def getRouteMinDelivery(self, route):
+        minDelivery = 10000000
+        for i in range(len(route)):
+            if self.demand[str(route[i])] < minDelivery and self.demand[str(route[i])] > 0:
+                minDelivery = self.demand[str(route[i])]
+        return minDelivery
+    
+    def getRouteMaxDelivery(self, route):
+        maxDelivery = 0
+        for i in range(len(route)):
+            if self.demand[str(route[i])] > maxDelivery:
+                maxDelivery = self.demand[str(route[i])]
+        return maxDelivery
+
+    def intraSwap(self, routesArray):
+        capacity = self.capacity
+        routes = routesArray
+        firstCost = self.calculateCost(routes)
+        cost = self.calculateCost(routes)
+        bestListOfRoutes = []
+        for i in range(len(routes)):
+            if len(routes[i]) > 3:
+                for j in range(len(routes[i]) - 1):
+                    if routes[i][j] == 0:
+                        continue
+                    if routes[i][j+1] == 0:
+                        continue
+                    else:
+                        tempVar = routes[i][j]
+                        routes[i][j] = routes[i][j+1]
+                        routes[i][j+1] = tempVar
+                        newCost = self.calculateCost(routes)
+                        if newCost < cost:
+                            cost = newCost
+                            bestListOfRoutes = routes
+        bestCost = self.calculateCost(bestListOfRoutes)
+        if bestListOfRoutes != [] and bestCost != 0:
+            print('Best route found by intra swap algorithm: ' + str(bestListOfRoutes))
+            print('Cost after optimization with Intra Swap: ' + str(bestCost))
+        else:
+            print('Inter Swap didn\'t optimzed any route at all!')
+        return routes
+    
+    
+    
+
+
+
+
+    # def swap(self, routesArray):
+    #     routes = routesArray
+    #     routesCopy = routesArray
+    #     costOfRoutes = self.calculateCost(routes)
+    #     capacity = self.capacity
+    #     r1NeighbStatus = False
+    #     r2NeighbStatus = False
+
+    #     for i in range(len(routes) - 1):
+    #         r1 = routes[i]
+    #         r2 = routes[i+1]
+    #         r1Demand = self.getRouteDemand(r1)
+    #         r2Demand = self.getRouteDemand(r2) 
+    #         for v in r1:
+    #             for k in r2:
+
+    #     return routes
+
+             
+
 
 
         
