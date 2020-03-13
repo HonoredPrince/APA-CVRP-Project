@@ -2,6 +2,7 @@
 from readDataFromFile import readFiles
 import collections
 from random import randrange
+from copy import deepcopy
 
 class NearestNeighbour:
     def __init__(self, instance):
@@ -222,31 +223,28 @@ class NearestNeighbour:
     def intraSwap(self, routesArray):
         capacity = self.capacity
         routes = routesArray
-        firstCost = self.calculateCost(routes)
         cost = self.calculateCost(routes)
         bestListOfRoutes = []
         for i in range(len(routes)):
             if len(routes[i]) > 3:
                 for j in range(len(routes[i]) - 1):
-                    if routes[i][j] == 0:
-                        continue
-                    if routes[i][j+1] == 0:
-                        continue
-                    else:
+                    if routes[i][j] != 0 and routes[i][j+1] != 0:
                         tempVar = routes[i][j]
                         routes[i][j] = routes[i][j+1]
                         routes[i][j+1] = tempVar
-                        newCost = self.calculateCost(routes)
-                        if newCost < cost:
-                            cost = newCost
-                            bestListOfRoutes = routes
+                        actualCost = self.calculateCost(routes)
+                        #print(routes, actualCost, cost)
+                        if actualCost < cost:
+                            cost = actualCost
+                            bestListOfRoutes = deepcopy(routes)
+                            #print(bestListOfRoutes)     
         bestCost = self.calculateCost(bestListOfRoutes)
         if bestListOfRoutes != [] and bestCost != 0:
             print('Best route found by intra swap algorithm: ' + str(bestListOfRoutes))
             print('Cost after optimization with Intra Swap: ' + str(bestCost))
         else:
-            print('Inter Swap didn\'t optimzed any route at all!')
-        return routes
+            print('Inter Swap didn\'t optimzed any instance of routes at all!')
+        return bestListOfRoutes
     
     
     
