@@ -182,30 +182,36 @@ class NearestNeighbour:
         return listOfRoutes
     
     #This function receives a list of routes that and show the total distance of that routes
-    def calculateCost(self, routesArray):
+    def calculateTravelCost(self, routesArray):
         routes = routesArray
         distanceTraveled = 0
+        capacity = self.capacity
+        for i in range(len(routes)):
+            for j in range(len(routes[i]) - 1):
+                distanceTraveled += self.matrix[routes[i][j+1]][routes[i][j]]
+        return distanceTraveled
+    
+    #This function returns the demand delivered by a list of routes, also calculates the remainder of capacity of a sub-route/vehicle, just uncomment the "Amount Left" log
+    def calculateDemandDelivered(self, routesArray):
+        routes = routesArray
         capacity = self.capacity
         totalDemandDelivered = 0
         for i in range(len(routes)):
             for j in range(len(routes[i]) - 1):
                 demandDeliveredByOneRoute = self.getRouteDemand(routes[i])
-                distanceTraveled += self.matrix[routes[i][j+1]][routes[i][j]]
             #print('Total demand delivered by the ' + str(i+1) + 'st route/vehicle: ' + str(demandDeliveredByOneRoute))
             totalDemandDelivered += demandDeliveredByOneRoute
             #print('Amount left of capacity: ' + str(capacity - demandDeliveredByOneRoute))
-        #print('\nTotal Traveled Distance for the passed routes: ' + str(distanceTraveled))
-        #print('\nTotal Demand delivered for the passed routes: ' + str(totalDemandDelivered))
+        return totalDemandDelivered 
 
-        #return {distanceTraveled, totalDemandDelivered}
-        return distanceTraveled   
-
+    #Function for getting a sub-route/vehicle demand delivered
     def getRouteDemand(self, route):
         demandDelivered = 0
         for i in range(len(route)):
             demandDelivered += self.demand[str(route[i])]
         return demandDelivered
 
+    #Mininum demand in a sub-route
     def getRouteMinDelivery(self, route):
         minDelivery = 10000000
         for i in range(len(route)):
@@ -213,6 +219,7 @@ class NearestNeighbour:
                 minDelivery = self.demand[str(route[i])]
         return minDelivery
     
+    #Maximum demand in a sub-route
     def getRouteMaxDelivery(self, route):
         maxDelivery = 0
         for i in range(len(route)):
@@ -220,10 +227,11 @@ class NearestNeighbour:
                 maxDelivery = self.demand[str(route[i])]
         return maxDelivery
 
+    #Function for the neighbour movement that swaps every element for every sub-route in a routes instance
     def intraSwap(self, routesArray):
         capacity = self.capacity
         routes = routesArray
-        cost = self.calculateCost(routes)
+        cost = self.calculateTravelCost(routes)
         bestListOfRoutes = []
         for i in range(len(routes)):
             if len(routes[i]) > 3:
@@ -232,46 +240,16 @@ class NearestNeighbour:
                         tempVar = routes[i][j]
                         routes[i][j] = routes[i][j+1]
                         routes[i][j+1] = tempVar
-                        actualCost = self.calculateCost(routes)
+                        actualCost = self.calculateTravelCost(routes)
                         #print(routes, actualCost, cost)
                         if actualCost < cost:
                             cost = actualCost
                             bestListOfRoutes = deepcopy(routes)
                             #print(bestListOfRoutes)     
-        bestCost = self.calculateCost(bestListOfRoutes)
+        bestCost = self.calculateTravelCost(bestListOfRoutes)
         if bestListOfRoutes != [] and bestCost != 0:
             print('Best route found by intra swap algorithm: ' + str(bestListOfRoutes))
             print('Cost after optimization with Intra Swap: ' + str(bestCost))
         else:
             print('Inter Swap didn\'t optimzed any instance of routes at all!')
         return bestListOfRoutes
-    
-    
-    
-
-
-
-
-    # def swap(self, routesArray):
-    #     routes = routesArray
-    #     routesCopy = routesArray
-    #     costOfRoutes = self.calculateCost(routes)
-    #     capacity = self.capacity
-    #     r1NeighbStatus = False
-    #     r2NeighbStatus = False
-
-    #     for i in range(len(routes) - 1):
-    #         r1 = routes[i]
-    #         r2 = routes[i+1]
-    #         r1Demand = self.getRouteDemand(r1)
-    #         r2Demand = self.getRouteDemand(r2) 
-    #         for v in r1:
-    #             for k in r2:
-
-    #     return routes
-
-             
-
-
-
-        
