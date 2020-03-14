@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from readDataFromFile import readFiles
 import collections
-from random import randrange
+from random import randrange, randint
 from copy import deepcopy
 
 class CVRP:
@@ -245,7 +245,7 @@ class CVRP:
                             #print(bestListOfRoutes)     
         bestCost = self.calculateTravelCost(bestListOfRoutes)
         if bestListOfRoutes != [] and bestCost != 0:
-            print('Best alternative route found by intra swap algorithm: ' + str(bestListOfRoutes))
+            print('Best alternative route found by Intra swap algorithm: ' + str(bestListOfRoutes))
             print('Cost after optimization with Intra Swap: ' + str(bestCost))
         else:
             print('Intra Swap didn\'t optimzed any instance of routes at all!')
@@ -279,12 +279,51 @@ class CVRP:
                                     #print(bestListOfRoutes)
         bestCost = self.calculateTravelCost(bestListOfRoutes)
         if bestListOfRoutes != [] and bestCost != 0:
-            print('Best alternative route found by inter swap algorithm: ' + str(bestListOfRoutes))
+            print('Best alternative route found by Inter swap algorithm: ' + str(bestListOfRoutes))
             print('Cost after optimization with Inter Swap: ' + str(bestCost))
         else:
             print('Inter Swap didn\'t optimzed any instance of routes at all!')
         return bestListOfRoutes
 
-                        
+    #Function for reinsertion movement that picks a random client in a sub-route for every iteration of i(routes size) and insert in another sub-route in a random position and returns a possible best solution 
+    def reinsertion(self, routesArray):
+        routes = routesArray
+        cost = self.calculateTravelCost(routes)
+        capacity = self.capacity
+        bestListOfRoutes = []
+        for i in range(len(routes)):
+            if len(routes[i]) > 3:
+                for j in range(len(routes[i]) - 1):
+                    #print(routes)
+                    randomIndex = randrange(len(routes[i]))
+                    #print(randomIndex)
+                    if routes[i][randomIndex] != 0:
+                        randomRoute = randint(0, len(routes) - 1)
+                        randomLocationToAppend = randrange(1, len(routes[randomRoute]))
+                        routes[randomRoute].insert(randomLocationToAppend, routes[i][randomIndex])
+                        routes[i].remove(routes[i][randomIndex])
+                        if self.getRouteDemand(routes[randomRoute]) > capacity or self.getRouteDemand(routes[i]) > capacity:
+                            elementInserted = routes[randomRoute][randomLocationToAppend]
+                            routes[randomRoute].remove(elementInserted)
+                            if elementInserted not in routes[i]:
+                                routes[i].insert(randomIndex, elementInserted)
+                            else:
+                                routes[i].remove(elementInserted)
+                                routes[i].insert(randomIndex, elementInserted)
+                        else:
+                            actualCost = self.calculateTravelCost(routes)
+                            if actualCost < cost:
+                                cost = actualCost
+                                bestListOfRoutes = deepcopy(routes)
+        bestCost = self.calculateTravelCost(bestListOfRoutes)
+        if bestListOfRoutes != [] and bestCost != 0:
+            print('Best alternative route found by Reinsertion algorithm: ' + str(bestListOfRoutes))
+            print('Cost after optimization with Reinsertion: ' + str(bestCost))
+        else:
+            print('Reinsertion didn\'t optimzed any instance of routes at all!')
+        return bestListOfRoutes
+
+                    
+
                 
         

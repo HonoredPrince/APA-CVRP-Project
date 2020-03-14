@@ -66,6 +66,10 @@ def main():
             routesForInterSwap = deepcopy(routesForNearestNeighbour)
             routesSwaped = instanceOfCVRP.interSwap(routesForInterSwap)
 
+            print('\n##Reinsertion##')
+            routesForReinsertion = deepcopy(routesForNearestNeighbour)
+            routesReinserted = instanceOfCVRP.reinsertion(routesForReinsertion)
+
 
             #Another solution, but this time is with random results
             print('\n####### Fully Randomized Execution Results #######\n')
@@ -88,6 +92,10 @@ def main():
             print('\n##Inter Swap##')
             routesForInterSwap = deepcopy(routesForFullyRandomizedSolution)
             routesSwaped = instanceOfCVRP.interSwap(routesForInterSwap)
+
+            print('\n##Reinsertion##')
+            routesForReinsertion = deepcopy(routesForFullyRandomizedSolution)
+            routesReinserted = instanceOfCVRP.reinsertion(routesForReinsertion)
 
         else:
             break
