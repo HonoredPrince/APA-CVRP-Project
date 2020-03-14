@@ -4,7 +4,7 @@ import collections
 from random import randrange
 from copy import deepcopy
 
-class NearestNeighbour:
+class CVRP:
     def __init__(self, instance):
         #Store all the data in the object constructor via calls in a readFiles object functions
         self.filename = str(instance)
@@ -163,7 +163,6 @@ class NearestNeighbour:
     #Function only for debugging purposes, should only be used for development stage
     #Just remove the comment tag for the respective result you want to see at certain point of the code
     #And call it on the part of the code you want 
-
     def debugValues(self):
         print(self.vehicleDestinationHistory)
         print(self.filename)
@@ -185,7 +184,6 @@ class NearestNeighbour:
     def calculateTravelCost(self, routesArray):
         routes = routesArray
         distanceTraveled = 0
-        capacity = self.capacity
         for i in range(len(routes)):
             for j in range(len(routes[i]) - 1):
                 distanceTraveled += self.matrix[routes[i][j+1]][routes[i][j]]
@@ -199,9 +197,9 @@ class NearestNeighbour:
         for i in range(len(routes)):
             for j in range(len(routes[i]) - 1):
                 demandDeliveredByOneRoute = self.getRouteDemand(routes[i])
-            #print('Total demand delivered by the ' + str(i+1) + 'st route/vehicle: ' + str(demandDeliveredByOneRoute))
+            print('Total demand delivered by the ' + str(i+1) + 'st route/vehicle: ' + str(demandDeliveredByOneRoute))
             totalDemandDelivered += demandDeliveredByOneRoute
-            #print('Amount left of capacity: ' + str(capacity - demandDeliveredByOneRoute))
+            print('Amount left of capacity: ' + str(capacity - demandDeliveredByOneRoute))
         return totalDemandDelivered 
 
     #Function for getting a sub-route/vehicle demand delivered
@@ -229,7 +227,6 @@ class NearestNeighbour:
 
     #Function for the neighbour movement that swaps every element for every sub-route in a routes instance
     def intraSwap(self, routesArray):
-        capacity = self.capacity
         routes = routesArray
         cost = self.calculateTravelCost(routes)
         bestListOfRoutes = []
@@ -248,8 +245,46 @@ class NearestNeighbour:
                             #print(bestListOfRoutes)     
         bestCost = self.calculateTravelCost(bestListOfRoutes)
         if bestListOfRoutes != [] and bestCost != 0:
-            print('Best route found by intra swap algorithm: ' + str(bestListOfRoutes))
+            print('Best alternative route found by intra swap algorithm: ' + str(bestListOfRoutes))
             print('Cost after optimization with Intra Swap: ' + str(bestCost))
+        else:
+            print('Intra Swap didn\'t optimzed any instance of routes at all!')
+        return bestListOfRoutes
+
+    #Function for the neighbour movement that swaps every element in a sub-route with every element in the sucessor sub-route
+    def interSwap(self, routesArray):
+        routes = routesArray
+        cost = self.calculateTravelCost(routes)
+        capacity = self.capacity
+        bestListOfRoutes = []
+        for i in range(len(routes) - 1):
+            for j in range(len(routes[i]) - 1):
+                if routes[i][j] != 0:
+                    for k in range(len(routes[i+1]) - 1):
+                        #print(routes)
+                        if routes[i+1][k] != 0:
+                            tempVar = routes[i][j]
+                            routes[i][j] = routes[i+1][k]
+                            routes[i+1][k] = tempVar
+                            if self.getRouteDemand(routes[i]) > capacity or self.getRouteDemand(routes[i+1]) > capacity:
+                                tempVar = routes[i][j]
+                                routes[i][j] = routes[i+1][k]
+                                routes[i+1][k] = tempVar 
+                            else:    
+                                actualCost = self.calculateTravelCost(routes)
+                                #print(routes, actualCost, cost)
+                                if actualCost < cost:
+                                    cost = actualCost
+                                    bestListOfRoutes = deepcopy(routes)
+                                    #print(bestListOfRoutes)
+        bestCost = self.calculateTravelCost(bestListOfRoutes)
+        if bestListOfRoutes != [] and bestCost != 0:
+            print('Best alternative route found by inter swap algorithm: ' + str(bestListOfRoutes))
+            print('Cost after optimization with Inter Swap: ' + str(bestCost))
         else:
             print('Inter Swap didn\'t optimzed any instance of routes at all!')
         return bestListOfRoutes
+
+                        
+                
+        
