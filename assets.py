@@ -244,12 +244,7 @@ class CVRP:
                             bestListOfRoutes = deepcopy(routes)
                             #print(bestListOfRoutes)     
         bestCost = self.calculateTravelCost(bestListOfRoutes)
-        if bestListOfRoutes != [] and bestCost != 0:
-            print('Best alternative route found by Intra swap algorithm: ' + str(bestListOfRoutes))
-            print('Cost after optimization with Intra Swap: ' + str(bestCost))
-        else:
-            print('Intra Swap didn\'t optimzed any instance of routes at all!')
-        return bestListOfRoutes
+        return bestListOfRoutes, bestCost
 
     #Function for the neighbour movement that swaps every element in a sub-route with every element in the sucessor sub-route
     def interSwap(self, routesArray):
@@ -278,12 +273,7 @@ class CVRP:
                                     bestListOfRoutes = deepcopy(routes)
                                     #print(bestListOfRoutes)
         bestCost = self.calculateTravelCost(bestListOfRoutes)
-        if bestListOfRoutes != [] and bestCost != 0:
-            print('Best alternative route found by Inter swap algorithm: ' + str(bestListOfRoutes))
-            print('Cost after optimization with Inter Swap: ' + str(bestCost))
-        else:
-            print('Inter Swap didn\'t optimzed any instance of routes at all!')
-        return bestListOfRoutes
+        return bestListOfRoutes, bestCost
 
     #Function for reinsertion movement that picks a random client in a sub-route for every iteration of i(routes size) and insert in another sub-route in a random position and returns a possible best solution 
     def reinsertion(self, routesArray):
@@ -316,14 +306,36 @@ class CVRP:
                                 cost = actualCost
                                 bestListOfRoutes = deepcopy(routes)
         bestCost = self.calculateTravelCost(bestListOfRoutes)
-        if bestListOfRoutes != [] and bestCost != 0:
-            print('Best alternative route found by Reinsertion algorithm: ' + str(bestListOfRoutes))
-            print('Cost after optimization with Reinsertion: ' + str(bestCost))
-        else:
-            print('Reinsertion didn\'t optimzed any instance of routes at all!')
-        return bestListOfRoutes
+        return bestListOfRoutes, bestCost
 
-                    
+    #Funcion that runs the VND Algorithm                
+    def variableNeighborhoodDescent(self, routesArray):
+        routes = routesArray
+        #initalListOfRoutes = deepcopy(routes)
+        cost = self.calculateTravelCost(routes)
+        bestListOfRoutes = []
+        #neighbourStructures = {1: "Intra-Swap", 2: "Inter-Swap", 3: "Reinsertion"}
+        k = 1
+        while( k <= 3 ):
+            #print('#A#', k, routes)
+            if(k == 1):
+                currentResult, actualCost = self.intraSwap(routes)
+            if(k == 2):
+                currentResult, actualCost = self.interSwap(routes)
+            if(k == 3):
+                currentResult, actualCost = self.reinsertion(routes) 
+            if (actualCost < cost and currentResult != []):
+                #print('#B#', k, currentResult)
+                cost = actualCost
+                routes = currentResult
+                bestListOfRoutes = deepcopy(currentResult)
+                #print('#C', k, bestListOfRoutes)
+                k = 1
+            else:
+                k += 1
+        bestCost = self.calculateTravelCost(bestListOfRoutes)
+        return bestListOfRoutes, bestCost
+        
 
                 
         
