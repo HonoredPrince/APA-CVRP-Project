@@ -87,7 +87,12 @@ def main():
 
             print('\n##VND##')
             routesForVND = deepcopy(routesForNearestNeighbour)
-            instanceOfCVRP.variableNeighborhoodDescent(routesForVND)
+            vndSolution, costVND = instanceOfCVRP.variableNeighborhoodDescent(routesForVND)
+            if vndSolution != [] and costVND != 0:
+                print('Best alternative route found by VND algorithm: ' + str(vndSolution))
+                print('Cost after optimization with VND: ' + str(costVND))
+            else:
+                print('VND didn\'t optimzed any instance of routes at all!')
 
 
             #Another solution, but this time is with random results
