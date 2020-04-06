@@ -3,6 +3,7 @@ from assets import CVRP
 from string import whitespace as ws
 from copy import deepcopy
 import re
+import time 
 
 #Basic menu, displays every instance filename avaliable
 def inputMenu():
@@ -43,6 +44,7 @@ def main():
             instanceOfCVRP = CVRP(instance)
 
             #This section is for the execution using the nearest neighbour method to get a solution, after that execution the solution is passed for the optimization algorithms and the results are printed
+            startTimeNeighbour = time.time()
             print('\n####### Nearest Neighbour Execution Results #######\n')
             instanceOfCVRP.nearestNeighbourFunction()
             instanceOfCVRP.showResults()
@@ -93,9 +95,11 @@ def main():
                 print('Cost after optimization with VND: ' + str(costVND))
             else:
                 print('VND didn\'t optimzed any instance of routes at all!')
-
-
+            endTimeNeighbour = time.time()
+            print('\nTime for Nearest Neighbour Execution: ' + str(endTimeNeighbour - startTimeNeighbour))
+            
             #Another solution, but this time is with random results
+            startTimeRandom = time.time()
             print('\n####### Fully Randomized Execution Results #######\n')
             instanceOfCVRP.fullyRandomizedSolution() 
             instanceOfCVRP.showResults()
@@ -146,6 +150,8 @@ def main():
                 print('Cost after optimization with VND: ' + str(costVND))
             else:
                 print('VND didn\'t optimzed any instance of routes at all!')
+            endTimeRandom = time.time()
+            print('\nTime for Fully Randomized Execution: ' + str(endTimeRandom - startTimeRandom))
         else:
             break
 
