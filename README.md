@@ -1,5 +1,5 @@
 # APA-CVRP-Project
-Project: Implementation of the Capacitated Vehicle Routing Problema using heuristics and otimization for college class final project
+Project: Implementation of the Capacitated Vehicle Routing Problem using heuristics and otimization for college class final project
 
 ### acess the project directory
 ### run "python main.py" on command line using a python interpreter to run the project
